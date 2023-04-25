@@ -15,25 +15,7 @@ class ClientConfiguration {
 
   @Bean
   public WebClient openWeatherMapClient(OpenWeatherMapProperties weatherMapProperties) {
-    ObjectMapper objectMapper = new ObjectMapper();
-    objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-
-    ExchangeStrategies strategies =
-        ExchangeStrategies.builder()
-            .codecs(
-                clientDefaultCodecsConfigurer -> {
-                  clientDefaultCodecsConfigurer
-                      .defaultCodecs()
-                      .jackson2JsonEncoder(
-                          new Jackson2JsonEncoder(objectMapper, MediaType.APPLICATION_JSON));
-                  clientDefaultCodecsConfigurer
-                      .defaultCodecs()
-                      .jackson2JsonDecoder(
-                          new Jackson2JsonDecoder(objectMapper, MediaType.APPLICATION_JSON));
-                })
-            .build();
     return WebClient.builder()
-        .exchangeStrategies(strategies)
         .baseUrl(weatherMapProperties.getUrl())
         .build();
   }
