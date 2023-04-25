@@ -1,0 +1,54 @@
+openapi: 3.0.2
+info:
+  title: VECTOR Weather - OpenAPI 3.0
+  description: |-
+    Open API specificaiton for the VECTOR weather application 
+  version: 1.0.0
+paths:
+  /weather:
+    get:
+      tags:
+        - Weather
+      summary: Get average weather details for the specific agglomeration in Poland
+      description: Get average weather details like temperatrue, pressure and humidity for the specific agglomeration in Poland
+      operationId: getWeather
+      parameters:
+        - name: agglomeration
+          in: query
+          description: Parameter to specify agglomeration for which average weather details are provided
+          required: true
+          schema:
+            type: string
+            enum:
+              - Trójmiasto
+              - Aglomeracja_Łódzka
+              - Metropolia_Górnośląska
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Weather'
+        '400':
+          description: Invalid status value
+components:
+  schemas:
+    Weather:
+      type: object
+      properties:
+        temperature:
+          description: Average temperature in agglomeration, unit Celsius
+          type: number
+          format: double
+          example: 9.07
+        pressure:
+          description: Average atmospheric pressure in agglomeration (on the sea level, if there is no sea_level or grnd_level data), hPa
+          type: number
+          format: double
+          example: 1016.0
+        humidity:
+          description: Average humidity in agglomeration, %
+          type: number
+          format: double
+          example: 67.0
